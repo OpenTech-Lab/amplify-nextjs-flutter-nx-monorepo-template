@@ -1,23 +1,31 @@
 version: 1
-backend:
-  phases:
-    build:
-      commands:
-        - cd ../.. && npm ci --prefer-offline --cache .npm   # Install from root (Nx workspace)
-        - cd packages/backend
-        - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
-frontend:
-  phases:
-    build:
-      commands:
-        - echo "Backend-only app - no frontend build required"
-        - mkdir -p dist && touch dist/index.html   # Dummy artifact (Hosting requires something)
-  artifacts:
-    baseDirectory: dist
-    files:
-      - '**/*'
-  cache:
-    paths:
-      - node_modules/**/*
-      - .npm/**/*
-      - .nx/cache/**/*
+applications:
+  - appRoot: packages/backend   # ← Must match your monorepo root directory setting
+    backend:
+      phases:
+        preBuild:
+          commands:
+            - npm ci --prefer-offline --cache .npm   # Install deps (from backend dir or root)
+            # If deps fail: uncomment next line to install from Nx root
+            # - cd ../.. && npm ci --prefer-offline --cache .npm && cd packages/backend
+        build:
+          commands:
+            - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
+        postBuild:
+          commands:
+            - echo "Backend deployment complete"   # Optional
+    frontend:   # Dummy (Hosting requires it, even for backend-only)
+      phases:
+        build:
+          commands:
+            - echo "No frontend - skipping"
+            - mkdir -p dist && touch dist/index.html   # Dummy artifact
+      artifacts:
+        baseDirectory: dist
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - node_modules/**/*
+          - .npm/**/*
+          - .nx/cache/**/*
