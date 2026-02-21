@@ -1,20 +1,28 @@
 version: 1
 applications:
-  - appRoot: packages/backend
+  - appRoot: packages/backend # The root directory for the backend app
+    # You can name this app anything you want in the console, e.g., "my-backend-app"
     backend:
+      phases:
+        build:
+          commands:
+            # Commands to install dependencies and deploy the backend (if needed)
+            - npm install
+            - amplify push --appId d31xn18g6773px --envName main
+  - appRoot: packages/frontend-app # The root directory for the frontend app
+    # This app will typically just run the frontend build and link to the shared backend
+    frontend:
       phases:
         preBuild:
           commands:
-            - cd ../.. && npm ci --prefer-offline --cache .npm
-            - cd packages/backend
-            - npm install --prefer-offline --cache .npm
+            - npm install
         build:
           commands:
-            - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
-    frontend:
+            - npm run build
       artifacts:
-        baseDirectory: ./
+        baseDirectory: dist # The output directory for the built files
         files:
-          - 'package.json'
+          - "**/*"
       cache:
-        paths: []
+        paths:
+          - node_modules/**/*
