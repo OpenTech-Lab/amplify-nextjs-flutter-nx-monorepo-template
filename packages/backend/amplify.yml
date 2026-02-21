@@ -6,11 +6,10 @@ applications:
         preBuild:
           commands:
             - cd ../.. && npm ci --prefer-offline --cache .npm
-            - npm install -g @aws-amplify/cli
             - cd packages/backend
         build:
           commands:
-            - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
+            - npx -p @aws-amplify/cli ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
     frontend:
       artifacts:
         baseDirectory: ./
