@@ -195,6 +195,13 @@ After sandbox starts:
        - npx ampx generate outputs --branch $AWS_BRANCH --app-id $BACKEND_APP_ID
    ```
 
+- **IMPORTANT**
+MUST run this command when build backend
+```
+aws amplify update-app --app-id YOUR_APP_ID --platform WEB
+```
+After changing the platform to "Web" (static), your current amplify.yml should work fine.
+
 ## Troubleshooting
 
 - **Turbopack panic / file watch limit** → Run the sysctl commands above
