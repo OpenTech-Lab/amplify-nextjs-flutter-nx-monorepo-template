@@ -3,18 +3,19 @@ applications:
   - appRoot: packages/backend
     backend:
       phases:
-        build:
+        preBuild:
           commands:
             - npm ci
+            - npx ampx --version  # verify it's available
+        build:
+          commands:
             - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
     frontend:
       phases:
         build:
           commands:
-            - mkdir -p dist
-            - echo '<!DOCTYPE html><html><body>Backend only</body></html>' > dist/index.html
+            - echo "No frontend"
       artifacts:
-        baseDirectory: dist
+        baseDirectory: .
         files:
           - '**/*'
-      buildPath: /
