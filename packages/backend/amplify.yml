@@ -5,15 +5,16 @@ applications:
       phases:
         preBuild:
           commands:
-            - cd ../.. && npm ci --prefer-offline --cache .npm   # Install Nx root deps
+            - cd ../.. && npm ci --prefer-offline --cache .npm
+            - npm install -g @aws-amplify/cli
             - cd packages/backend
         build:
           commands:
-            - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
+            - ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
     frontend:
       artifacts:
         baseDirectory: ./
         files:
-          - 'README.md'   # Dummy file (use any existing file like README.md or package.json)
+          - 'package.json'
       cache:
-        paths: []   # No caching needed
+        paths: []
