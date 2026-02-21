@@ -9,7 +9,7 @@ applications:
             # Commands to install dependencies and deploy the backend (if needed)
             - npm install
             - amplify push --appId d31xn18g6773px --envName main
-  - appRoot: packages/frontend-app # The root directory for the frontend app
+  - appRoot: apps/web # The root directory for the frontend app
     # This app will typically just run the frontend build and link to the shared backend
     frontend:
       phases:
