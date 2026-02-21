@@ -11,8 +11,10 @@ applications:
       phases:
         build:
           commands:
-            - echo "No frontend"
+            - mkdir -p dist
+            - echo '<!DOCTYPE html><html><body>Backend only</body></html>' > dist/index.html
       artifacts:
-        baseDirectory: .
+        baseDirectory: dist
         files:
           - '**/*'
+      buildPath: /
