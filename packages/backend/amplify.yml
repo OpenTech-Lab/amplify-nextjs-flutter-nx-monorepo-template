@@ -1,17 +1,18 @@
 version: 1
-appRoot: packages/backend
-backend:
-  phases:
-    build:
-      commands:
-        - npm ci
-        - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
-frontend:
-  phases:
-    build:
-      commands:
-        - echo "No frontend build"
-  artifacts:
-    baseDirectory: .
-    files:
-      - '**/*'
+applications:
+  - appRoot: packages/backend
+    backend:
+      phases:
+        build:
+          commands:
+            - npm ci
+            - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
+    frontend:
+      phases:
+        build:
+          commands:
+            - echo "No frontend"
+      artifacts:
+        baseDirectory: .
+        files:
+          - '**/*'
